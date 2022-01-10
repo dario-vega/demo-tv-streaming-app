@@ -92,9 +92,13 @@ query WatchTime {
     length
   }
 }
-
-
-
+````
+GraphQL queries variable
+````
+{
+  "streamId": 1001,
+  "country":"USA"
+}
 ````
 
 GraphQL mutations
