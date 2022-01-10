@@ -19,7 +19,7 @@ npm start
 1. USE POSTMAN
 2. USE studio.apollographql.
 
-Note: In order to manage certificates and SSL, I am using the following url after create an API Gateway 
+Note: In order to manage certificates and SSL, I am using the following url after creating an API Gateway 
 https://lc22qxcred2zq4ciqms2tzzxv4.apigateway.us-ashburn-1.oci.customer-oci.com/
 
 
