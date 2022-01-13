@@ -52,8 +52,8 @@ query Streams {
   }
 }
 
-query Streams($streamId: Int) {
-  stream(id: $streamId) {
+query Stream($streamId: Int) {
+  user1:stream(id: $streamId) {
     id
     acct_data {
       firstName
@@ -76,6 +76,60 @@ query Streams($streamId: Int) {
       }
     }
   }
+}
+
+
+query Stream($streamId: Int) {
+  user1:stream(id: $streamId) {
+    id
+    acct_data {
+      firstName
+      lastName
+      country
+      contentStreamed {
+        showName
+        showId
+        showType
+        numSeasons
+        seriesInfo {
+          seasonNum
+          numEpisodes
+          episodes {
+            episodeID
+            lengthMin
+            minWatched
+          }
+        }
+      }
+    }
+  }
+  user2: stream(id: 2) {
+    id 
+    }
+}
+
+
+query Stream{
+    user1: stream (id: 1) {
+        id
+        ...contentStreamed
+    }
+    user2: stream(id: 2) {
+        id
+        ...contentStreamed
+    }
+}
+
+fragment contentStreamed on Stream {
+    acct_data
+    {
+      contentStreamed {  
+        showName
+        showId
+        showType
+        numSeasons    
+      }
+    }
 }
 
 query PeopleWatching($country: String!) {
