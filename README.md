@@ -109,14 +109,14 @@ query Stream($streamId: Int) {
 }
 
 
-query Stream{
+query Stream ($contentDirective: Boolean!){
     user1: stream (id: 1) {
         id
-        ...contentStreamed
+        ...contentStreamed @include(if: $contentDirective)
     }
     user2: stream(id: 2) {
         id
-        ...contentStreamed
+        ...contentStreamed @include(if: $contentDirective)
     }
 }
 
@@ -151,7 +151,8 @@ GraphQL queries variable
 ````
 {
   "streamId": 1001,
-  "country":"USA"
+  "country":"USA",
+  "contentDirective": true  
 }
 ````
 
