@@ -11,6 +11,8 @@ Work in Progress 👷
 
 cd ~/demo-tv-streaming-app
 npm install 
+export NOSQL_ENDPOINT=proxy-nosql
+export NOSQL_PORT=8081
 npm start
 ````
 
