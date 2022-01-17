@@ -41,8 +41,7 @@ async function createTable(client) {
 function createNoSQLClient() {
        return new NoSQLClient({
             serviceType: ServiceType.KVSTORE,
-            //endpoint: 'proxy-nosql:8081'
-            endpoint: 'localhost:8087'
+            endpoint: process.env.NOSQL_ENDPOINT + ":" + process.env.NOSQL_PORT
         });
 }
 
