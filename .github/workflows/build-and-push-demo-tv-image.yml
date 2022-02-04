@@ -35,7 +35,7 @@ jobs:
         run: echo "::set-output name=date::$(date +'%Y-%m')"
       - name: Build image
         run: |
-          cd NoSQL/ce
+          cd 
           docker build --tag ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG .
           docker tag ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
         env:
