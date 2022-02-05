@@ -95,7 +95,7 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
 ````
 
 
-WARNING Some queries are raising errors when running using CE. Please contact me to have instructions about running KVLite on EE
+WARNING Some queries are raising errors when running using CE. Please contact me to have instructions about running EE
 
 
 ````
