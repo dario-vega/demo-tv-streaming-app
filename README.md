@@ -5,6 +5,20 @@ Work in Progress 👷
 ## Deployment using Docker
 1. Start up KVLite in a container
 
+pull the image directly from the GitHub Container Registry:
+
+```shell
+docker pull ghcr.io/oracle/nosql:latest-ce
+docker tag ghcr.io/oracle/nosql:latest-ce oracle/nosql:ce
+```
+
+Start up KVLite in a container. You must give it a name and provide a hostname. Startup of
+KVLite is the default `CMD` of the image:
+
+```shell
+docker run -d --name=kvlite --hostname=kvlite --env KV_PROXY_PORT=8080 -p 8080:8080 oracle/nosql:ce
+```
+
 see instuction https://github.com/oracle/docker-images/tree/main/NoSQL
 
 2. Deploy this application
@@ -32,6 +46,20 @@ ENV NOSQL_PORT 8080
 ## Deployment on a external host connected to KVLite runnning in a container
 
 1. Start up KVLite in a container
+
+pull the image directly from the GitHub Container Registry:
+
+```shell
+docker pull ghcr.io/oracle/nosql:latest-ce
+docker tag ghcr.io/oracle/nosql:latest-ce oracle/nosql:ce
+```
+
+Start up KVLite in a container. You must give it a name and provide a hostname. Startup of
+KVLite is the default `CMD` of the image:
+
+```shell
+docker run -d --name=kvlite --hostname=kvlite --env KV_PROXY_PORT=8080 -p 8080:8080 oracle/nosql:ce
+```
 
 see instuction https://github.com/oracle/docker-images/tree/main/NoSQL
 
