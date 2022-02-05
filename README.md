@@ -117,7 +117,7 @@ Work in Progress 👷
 Note: In order to manage certificates and SSL, I am using the following url after creating an API Gateway 
 https://lc22qxcred2zq4ciqms2tzzxv4.apigateway.us-ashburn-1.oci.customer-oci.com/
 
-This API Gateway is connected to a current deployment using OK
+This API Gateway is connected to a current deployment using OKE ( Oracle Kubernetes Engine)
 
 
 
