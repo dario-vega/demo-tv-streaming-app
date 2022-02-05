@@ -24,8 +24,10 @@ Note the use of --link to contact the KVLite Container (actual KVLite container 
 
 This project offers sample container image to show how to connect a NoSQL application to Oracle NoSQL Database Proxy running in a container
 
+````
 ENV NOSQL_ENDPOINT kvlite
 ENV NOSQL_PORT 8080
+````
 
 ## Deployment on a external host connected to NoSQL KVLITE docker container
 
@@ -49,13 +51,47 @@ npm start
   
 ````shell
 docker cp insert_stream_acct.sql kvlite:insert_stream_acct.sql
-docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 -store kvstore load -file /insert_stream_acct.sql
+docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 \
+-store kvstore load -file /insert_stream_acct.sql
 ````
 
 ## Run some GraphQL queries
 
 ````shell
-curl --request POST     --header 'content-type: application/json'     --url 'localhost:3000'     --data '{"query":"query Streams {\r\n  streams {\r\n    id\r\n    acct_data {\r\n      firstName\r\n      lastName\r\n      country\r\n    }\r\n  }\r\n}"}' | jq
+curl --request POST     --header 'content-type: application/json' --url 'localhost:3000' \
+--data '{"query":"query Streams { streams { id  acct_data { firstName  lastName country } }}"}' | jq
+````
+````
+{
+  "data": {
+    "streams": [
+      {
+        "id": 1,
+        "acct_data": {
+          "firstName": "John",
+          "lastName": "Sanders",
+          "country": "USA"
+        }
+      },
+      {
+        "id": 3,
+        "acct_data": {
+          "firstName": "Aniketh",
+          "lastName": "Shubham",
+          "country": "India"
+        }
+      },
+      {
+        "id": 2,
+        "acct_data": {
+          "firstName": "Tim",
+          "lastName": "Greenberg",
+          "country": "USA"
+        }
+      }
+    ]
+  }
+}
 ````
 
 more queries below
