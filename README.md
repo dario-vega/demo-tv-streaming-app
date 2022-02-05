@@ -2,24 +2,67 @@
 Demo TV streaming application using GraphQL and NoSQL
 Work in Progress 👷
 
-## Deployment
-1. Install and Run NoSQL docker image
-2. Clone this repository
-3. Run
+## Deployment on Docker
+1. Run NoSQL KVLITE docker container
 
+see instuction https://github.com/oracle/docker-images/tree/main/NoSQL
+
+2. Deploy this application
+
+````shell
+docker pull ghcr.io/dario-vega/demo-tv-streaming-app:latest
+docker tag ghcr.io/dario-vega/demo-tv-streaming-app:latest demo-tv-streaming-app:latest
 ````
 
+Start up the demo in a container. 
+
+````shell
+docker run -d --link kvlite:kvlite -p 3000:3000 demo-tv-streaming-app:latest 
+````
+
+Note the use of --link to contact the KVLite Container (actual KVLite container is named kvlite; alias is kvlite).
+
+This project offers sample container image to show how to connect a NoSQL application to Oracle NoSQL Database Proxy
+
+ENV NOSQL_ENDPOINT kvlite
+ENV NOSQL_PORT 8080
+
+## Deployment on a external host connected to NoSQL KVLITE docker container
+
+
+Clone this project
+
+````shell
 cd ~/demo-tv-streaming-app
 npm install 
-export NOSQL_ENDPOINT=proxy-nosql
-export NOSQL_PORT=8081
+export NOSQL_ENDPOINT=nosql-container-host
+export NOSQL_PORT=8080
 npm start
 ````
 
-## TEST
 
-1. USE POSTMAN
-2. USE https://studio.apollographql.com/sandbox
+## TEST USING KVLITE CONTAINER
+
+Load test data
+  
+````shell
+docker cp insert_stream_acct.sql kvlite:insert_stream_acct.sql
+docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 -store kvstore load -file /insert_stream_acct.sql
+````
+
+Run some GraphQL queries
+
+````shell
+curl --request POST     --header 'content-type: application/json'     --url 'localhost:3000'     --data '{"query":"query Streams {\r\n  streams {\r\n    id\r\n    acct_data {\r\n      firstName\r\n      lastName\r\n      country\r\n    }\r\n  }\r\n}"}' | jq
+````
+
+more queries below
+
+## deployment on kubernetes 
+
+Work in Progress 👷 
+
+## TEST using https://studio.apollographql.com/sandbox 
 
 Note: In order to manage certificates and SSL, I am using the following url after creating an API Gateway 
 https://lc22qxcred2zq4ciqms2tzzxv4.apigateway.us-ashburn-1.oci.customer-oci.com/
