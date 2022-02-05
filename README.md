@@ -29,7 +29,7 @@ ENV NOSQL_ENDPOINT kvlite
 ENV NOSQL_PORT 8080
 ````
 
-## Deployment on a external host connected to NoSQL KVLITE docker container
+## Deployment on a external host connected to KVLite runnning in a container
 
 1. Start up KVLite in a container
 
@@ -46,7 +46,7 @@ npm start
 ````
 
 
-## Load some test data to the KVLITE CONTAINER
+## Load some test data to KVLite runnning in a container
 
   
 ````shell
