@@ -122,8 +122,9 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
 }
 ````
 
+The steps outlined above are using Oracle NoSQL Database community edition, if you need Oracle NoSQL Database Enterprise Edition, please use the appropriate image name.
 
-WARNING Some queries are raising errors when running using CE. Please contact me to have instructions about running EE
+WARNING Some queries are raising errors when running using community edition. Please contact me to have instructions about build an image using Enterprise Edition
 
 
 ````
