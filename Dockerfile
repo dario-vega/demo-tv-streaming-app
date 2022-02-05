@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
-ENV NOSQL_ENDPOINT localhost
+ENV NOSQL_ENDPOINT kvlite
 ENV NOSQL_PORT 8080
 
 
