@@ -96,6 +96,16 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
 
 more queries below
 
+````
+curl --request POST \
+    --header 'content-type: application/json' \
+    --url 'localhost:3000' \
+    --data '{"query":"query WatchTime { watchTime { showName seasonNum length } } "}'
+````
+
+Some queries are raising errors when running using CE. Please contact me to have instructions about running KVLite on EE
+
+
 ## deployment on kubernetes 
 
 Work in Progress 👷 
