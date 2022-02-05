@@ -84,6 +84,8 @@ docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 \
 -store kvstore load -file /insert_stream_acct.sql
 ````
 
+read  https://github.com/oracle/docker-images/tree/main/NoSQL#using-oracle-nosql-command-line-from-an-external-host if you want to run those commands from your host
+
 ## Run some GraphQL queries
 
 ````shell
