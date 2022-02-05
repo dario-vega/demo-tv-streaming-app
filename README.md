@@ -94,7 +94,9 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
 }
 ````
 
-more queries below
+
+Some queries are raising errors when running using CE. Please contact me to have instructions about running KVLite on EE
+
 
 ````
 curl --request POST \
@@ -103,7 +105,7 @@ curl --request POST \
     --data '{"query":"query WatchTime { watchTime { showName seasonNum length } } "}'
 ````
 
-Some queries are raising errors when running using CE. Please contact me to have instructions about running KVLite on EE
+more queries below
 
 
 ## deployment on kubernetes 
