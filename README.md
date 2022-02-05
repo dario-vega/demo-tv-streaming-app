@@ -2,8 +2,8 @@
 Demo TV streaming application using GraphQL and NoSQL
 Work in Progress 👷
 
-## Deployment on Docker
-1. Run NoSQL KVLITE docker container
+## Deployment using Docker
+1. Start up KVLite in a container
 
 see instuction https://github.com/oracle/docker-images/tree/main/NoSQL
 
@@ -14,7 +14,7 @@ docker pull ghcr.io/dario-vega/demo-tv-streaming-app:latest
 docker tag ghcr.io/dario-vega/demo-tv-streaming-app:latest demo-tv-streaming-app:latest
 ````
 
-Start up the demo in a container. 
+Start up this demo in a container 
 
 ````shell
 docker run -d --link kvlite:kvlite -p 3000:3000 demo-tv-streaming-app:latest 
@@ -22,15 +22,18 @@ docker run -d --link kvlite:kvlite -p 3000:3000 demo-tv-streaming-app:latest
 
 Note the use of --link to contact the KVLite Container (actual KVLite container is named kvlite; alias is kvlite).
 
-This project offers sample container image to show how to connect a NoSQL application to Oracle NoSQL Database Proxy
+This project offers sample container image to show how to connect a NoSQL application to Oracle NoSQL Database Proxy running in a container
 
 ENV NOSQL_ENDPOINT kvlite
 ENV NOSQL_PORT 8080
 
 ## Deployment on a external host connected to NoSQL KVLITE docker container
 
+1. Start up KVLite in a container
 
-Clone this project
+see instuction https://github.com/oracle/docker-images/tree/main/NoSQL
+
+2. Clone this project and startup the application 
 
 ````shell
 cd ~/demo-tv-streaming-app
@@ -41,16 +44,15 @@ npm start
 ````
 
 
-## TEST USING KVLITE CONTAINER
+## Load some test data to the KVLITE CONTAINER
 
-Load test data
   
 ````shell
 docker cp insert_stream_acct.sql kvlite:insert_stream_acct.sql
 docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 -store kvstore load -file /insert_stream_acct.sql
 ````
 
-Run some GraphQL queries
+## Run some GraphQL queries
 
 ````shell
 curl --request POST     --header 'content-type: application/json'     --url 'localhost:3000'     --data '{"query":"query Streams {\r\n  streams {\r\n    id\r\n    acct_data {\r\n      firstName\r\n      lastName\r\n      country\r\n    }\r\n  }\r\n}"}' | jq
@@ -66,6 +68,8 @@ Work in Progress 👷
 
 Note: In order to manage certificates and SSL, I am using the following url after creating an API Gateway 
 https://lc22qxcred2zq4ciqms2tzzxv4.apigateway.us-ashburn-1.oci.customer-oci.com/
+
+This API Gateway is connected to a current deployment using OK
 
 
 
