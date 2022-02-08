@@ -49,6 +49,17 @@ ENV NOSQL_ENDPOINT kvlite
 ENV NOSQL_PORT 8080
 ````
 
+## Deployment using docker-compose
+
+1. Clone this project and run the up docker-compose command
+
+````shell
+cd ~/demo-tv-streaming-app
+docker-compose up -d
+docker-compose ps
+````
+
+
 ## Deployment on a external host connected to KVLite runnning in a container
 
 1. Start up KVLite in a container
