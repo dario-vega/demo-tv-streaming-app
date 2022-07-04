@@ -1,4 +1,4 @@
-FROM node:12-slim
+FROM node:16-slim
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -9,9 +9,13 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 ENV NOSQL_ENDPOINT kvlite
 ENV NOSQL_PORT 8080
+# ENV NOSQL_ServiceType useInstancePrincipal 
+# ENV NOSQL_REGION
+# ENV NOSQL_COMPID
 
-
+RUN node --version
 RUN npm install
+RUN npm install oracle-nosqldb --save
 # If you are building your code for production
 # RUN npm ci --only=production
 

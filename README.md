@@ -95,9 +95,9 @@ npm start
 
   
 ````shell
-docker cp insert_stream_acct.sql kvlite:insert_stream_acct.sql
+docker cp insert-stream-acct.sql kvlite:insert-stream-acct.sql
 docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 \
--store kvstore load -file /insert_stream_acct.sql
+-store kvstore load -file /insert-stream-acct.sql
 ````
 
 read  https://github.com/oracle/docker-images/tree/main/NoSQL#using-oracle-nosql-command-line-from-an-external-host if you want to run those commands from your host
@@ -106,7 +106,7 @@ read  https://github.com/oracle/docker-images/tree/main/NoSQL#using-oracle-nosql
 
 ````shell
 curl --request POST     --header 'content-type: application/json' --url 'localhost:3000' \
---data '{"query":"query Streams { streams { id  acct_data { firstName  lastName country } }}"}' | jq
+--data '{"query":"query Streams { streams { id  info { firstName  lastName country } }}"}' | jq
 ````
 ````
 {
@@ -114,7 +114,7 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
     "streams": [
       {
         "id": 1,
-        "acct_data": {
+        "info": {
           "firstName": "John",
           "lastName": "Sanders",
           "country": "USA"
@@ -122,7 +122,7 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
       },
       {
         "id": 3,
-        "acct_data": {
+        "info": {
           "firstName": "Aniketh",
           "lastName": "Shubham",
           "country": "India"
@@ -130,7 +130,7 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
       },
       {
         "id": 2,
-        "acct_data": {
+        "info": {
           "firstName": "Tim",
           "lastName": "Greenberg",
           "country": "USA"
@@ -164,181 +164,4 @@ see yaml files for a deployment using OKE (Oracle Kubernetes Engine)
 
 ## TEST using https://studio.apollographql.com/sandbox 
 
-Note: In order to manage certificates and SSL, I am using the following url after creating an API Gateway 
-https://lc22qxcred2zq4ciqms2tzzxv4.apigateway.us-ashburn-1.oci.customer-oci.com/
-
-This API Gateway is connected to a current deployment using OKE (Oracle Kubernetes Engine)
-
-
-
-GraphQL queries
-````
-query Streams {
-  streams {
-    id
-    acct_data {
-      firstName
-      lastName
-      country
-      contentStreamed {
-        showName
-        showId
-        showType
-        numSeasons
-        seriesInfo {
-          seasonNum
-          numEpisodes
-          episodes {
-            episodeID
-            lengthMin
-            minWatched
-          }
-        }
-      }
-    }
-  }
-}
-
-query Stream($streamId: Int) {
-  user1:stream(id: $streamId) {
-    id
-    acct_data {
-      firstName
-      lastName
-      country
-      contentStreamed {
-        showName
-        showId
-        showType
-        numSeasons
-        seriesInfo {
-          seasonNum
-          numEpisodes
-          episodes {
-            episodeID
-            lengthMin
-            minWatched
-          }
-        }
-      }
-    }
-  }
-}
-
-
-query Stream($streamId: Int) {
-  user1:stream(id: $streamId) {
-    id
-    acct_data {
-      firstName
-      lastName
-      country
-      contentStreamed {
-        showName
-        showId
-        showType
-        numSeasons
-        seriesInfo {
-          seasonNum
-          numEpisodes
-          episodes {
-            episodeID
-            lengthMin
-            minWatched
-          }
-        }
-      }
-    }
-  }
-  user2: stream(id: 2) {
-    id 
-    }
-}
-
-
-query Stream ($contentDirective: Boolean!){
-    user1: stream (id: 1) {
-        id
-        ...contentStreamed @include(if: $contentDirective)
-    }
-    user2: stream(id: 2) {
-        id
-        ...contentStreamed @include(if: $contentDirective)
-    }
-}
-
-fragment contentStreamed on Stream {
-    acct_data
-    {
-      contentStreamed {  
-        showName
-        showId
-        showType
-        numSeasons    
-      }
-    }
-}
-
-query PeopleWatching($country: String!) {
-  peopleWatching(country: $country) {
-    showId
-    cnt
-  }
-}
-
-query WatchTime {
-  watchTime {
-    showName
-    seasonNum
-    length
-  }
-}
-````
-GraphQL queries variable
-````
-{
-  "streamId": 1001,
-  "country":"USA",
-  "contentDirective": true  
-}
-````
-
-GraphQL mutations
-````
-mutation CreateStream($input: StreamEntry) {
-  createStream(input: $input) {
-    id
-    acct_data {
-      firstName
-      lastName
-      country
-     }
-  }
-}
-
-{
-  "input": {
-    "firstName": "dario",
-    "lastName": "vega",
-    "country": "France",
-    "contentStreamed": [
-      {
-        "showName": "First"
-      }
-    ]
-  }
-}
-
-mutation UpdateStream($updateStreamId: Int, $input: StreamEntry) {
-  updateStream(id: $updateStreamId, input: $input) {
-    id
-
-  }
-}
-
-mutation DeleteStream($deleteStreamId: Int) {
-  deleteStream(id: $deleteStreamId) {
-    id
-  }
-}
-````
+[QUERIES.md](./QUERIES.md)

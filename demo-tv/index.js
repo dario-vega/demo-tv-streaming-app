@@ -4,6 +4,7 @@ const fs = require('fs')
 const NoSQLClient = require('oracle-nosqldb').NoSQLClient;
 const Region = require('oracle-nosqldb').Region;
 const ServiceType = require('oracle-nosqldb').ServiceType;
+const CapacityMode = require('oracle-nosqldb').CapacityMode;
 
 process
 .on('SIGTERM', function() {
@@ -24,14 +25,17 @@ process
 });
 
 async function createTable(client) {
-  const createDDL = fs.readFileSync('demo_stream_acct.ddl', 'utf8')
-  // readUnits, writeUnits, storageGB only used if Cloud Service
+  const createDDL = fs.readFileSync('demo-stream-acct.ddl', 'utf8')
+  // readUnits, writeUnits, storageGB using same values as for Always free
   let resTab = await client.tableDDL(createDDL, {
       tableLimits: {
-          readUnits: 20,
-          writeUnits: 20,
-          storageGB: 1
+          //mode: CapacityMode.PROVISIONED,
+          //readUnits: 50,
+          //writeUnits: 50,
+          mode: CapacityMode.ON_DEMAND,
+          storageGB: 25
       }
+      , complete: true
   });
   await client.forCompletion(resTab);
   console.log('  Creating table %s', resTab.tableName);
@@ -39,10 +43,35 @@ async function createTable(client) {
 }
 
 function createNoSQLClient() {
+    switch(process.env.NOSQL_ServiceType) {
+    case 'useInstancePrincipal':
+        return new NoSQLClient({
+            region: process.env.NOSQL_REGION ,
+            compartment:process.env.NOSQL_COMPID,
+            auth: {
+              iam: {
+                  useInstancePrincipal: true
+              }
+            }
+        });
+    case 'useDelegationToken':
+        return new NoSQLClient({
+            region: process.env.NOSQL_REGION ,
+            compartment:process.env.NOSQL_COMPID,
+            auth: {
+              iam: {
+                  useInstancePrincipal: true,
+                  delegationTokenProvider: process.env.OCI_DELEGATION_TOKEN_FILE
+              }
+            }
+        });
+    default:
+       // on-premise non-secure configuration or Cloud Simulator
        return new NoSQLClient({
             serviceType: ServiceType.KVSTORE,
             endpoint: process.env.NOSQL_ENDPOINT + ":" + process.env.NOSQL_PORT
         });
+    }
 }
 
 
@@ -52,7 +81,7 @@ function createNoSQLClient() {
 const TABLE_NAME = 'stream_acct';
 
 async function getAllStreamsHelper() {
-  let statement = `SELECT d.id, d.acct_data as acct_data FROM ${TABLE_NAME} d LIMIT 100`;
+  let statement = `SELECT d.id, d.info as info FROM ${TABLE_NAME} d LIMIT 100`;
   const rows = [];
   let cnt ;
   let res;
@@ -65,7 +94,7 @@ async function getAllStreamsHelper() {
 }
 
 async function peopleWatching(country) {
-  let statement = `SELECT $show.showId, count(*) as cnt FROM ${TABLE_NAME} $s, unnest($s.acct_data.contentStreamed[] as $show) WHERE $s.acct_data.country = "USA" GROUP BY $show.showId ORDER BY count(*) DESC` 
+  let statement = `SELECT $show.showId, count(*) as cnt FROM ${TABLE_NAME} $s, unnest($s.info.shows[] as $show) WHERE $s.info.country = "USA" GROUP BY $show.showId ORDER BY count(*) DESC` 
   const rows = [];
   let cnt ;
   let res;
@@ -78,7 +107,7 @@ async function peopleWatching(country) {
 }
 
 async function watchTime() {
-  let statement = `SELECT $show.showName, $seriesInfo.seasonNum, sum($seriesInfo.episodes.minWatched) AS length FROM stream_acct n, unnest(n.acct_data.contentStreamed[] AS $show, $show.seriesInfo[] as $seriesInfo) GROUP BY $show.showName, $seriesInfo.seasonNum ORDER BY sum($seriesInfo.episodes.minWatched)`
+  let statement = `SELECT $show.showName, $seriesInfo.seasonNum, sum($seriesInfo.episodes.minWatched) AS length FROM stream_acct n, unnest(n.info.shows[] AS $show, $show.seriesInfo[] as $seriesInfo) GROUP BY $show.showName, $seriesInfo.seasonNum ORDER BY sum($seriesInfo.episodes.minWatched)`
   const rows = [];
   let cnt ;
   let res;
@@ -92,24 +121,24 @@ async function watchTime() {
 
 async function getOneStreamHelper(id) {
   res = await client.get(TABLE_NAME, { id: id });
-  //let z = Object.assign({id :id}, res.row.acct_data)
+  //let z = Object.assign({id :id}, res.row.info)
   return res.row;
 }
 
 async function createStreamHelper(input) {
   res = await client.putIfAbsent(TABLE_NAME, {
-        acct_data: input
+        info: input
   });
-  let newStream = {id: res.generatedValue , acct_data: input};
+  let newStream = {id: res.generatedValue , info: input};
   return newStream;
 }
 
 async function updateStreamHelper(id, input) {
   res = await client.putIfPresent(TABLE_NAME, {
         id: id,
-        acct_data: input
+        info: input
   });
-  let updStream = {id :id,  acct_data: input};
+  let updStream = {id :id,  info: input};
   return updStream;
 }
 
@@ -117,7 +146,7 @@ async function deleteStreamHelper(id) {
   res = await client.delete(TABLE_NAME, {
         id: id
   });
-  delStream = {id: id, acct_data: null};
+  delStream = {id: id, info: null};
   return delStream;
 }
 
@@ -136,10 +165,10 @@ type seriesInfo {
   numEpisodes: Int!,
   episodes: [episodes]
 }
-type contentStreamed {
+type shows {
   showName: String!
   showId: Int,
-  showType: String,
+  type: String,
   numSeasons: Int,
   seriesInfo: [seriesInfo]
 }
@@ -147,11 +176,11 @@ type StreamContent {
   firstName: String!,
   lastName: String!,
   country: String!,
-  contentStreamed: [contentStreamed]
+  shows: [shows]
 }
 type Stream {
   id: Int!,
-  acct_data: StreamContent
+  info: StreamContent
 }
 type AggResult1 {
   showId: Int!,
@@ -168,14 +197,14 @@ type Query {
   peopleWatching(country: String!): [AggResult1!],
   watchTime: [AggResult2!]
 }
-input contentStreamedEntry {
+input showsEntry {
   showName: String!
 }
 input StreamEntry {
   firstName: String!,
   lastName: String!,
   country: String!,
-  contentStreamed: [contentStreamedEntry]
+  shows: [showsEntry]
 }
 type Mutation {
   createStream(input: StreamEntry): Stream!,
