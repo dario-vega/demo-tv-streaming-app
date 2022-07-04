@@ -1,4 +1,4 @@
-#demo-tv-streaming-app
+# demo-tv-streaming-app
 Demo TV streaming application using GraphQL and NoSQL
 
 ## TEST using https://studio.apollographql.com/sandbox 

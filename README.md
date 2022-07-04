@@ -34,12 +34,12 @@ Start up this demo in a container
 ````shell
 docker run -d --env NOSQL_ENDPOINT=$HOSTNAME -p 3000:3000 demo-tv-streaming-app:latest 
 ````
-or use user-defined bridge network, to simplify I will use the -- link option
+or use user-defined bridge network name
 
 ````shell
-docker run -d --name=kvlite --hostname=kvlite --env KV_PROXY_PORT=8080 -p 8080:8080 oracle/nosql:ce
+docker run -d --link kvlite --env NOSQL_ENDPOINT=kvlite  -p 3000:3000 demo-tv-streaming-app:latest
 ````
-Note the use of --link to contact the KVLite Container (actual KVLite container is named kvlite; alias is kvlite).
+
 
 This project offers sample container image to show how to connect a NoSQL application to Oracle NoSQL Database Proxy running in a container
 
@@ -95,12 +95,16 @@ npm start
 
   
 ````shell
+cd ~/demo-tv-streaming-app/demo-tv
 docker cp insert-stream-acct.sql kvlite:insert-stream-acct.sql
 docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 \
 -store kvstore load -file /insert-stream-acct.sql
 ````
+*Note*: if you are using docker compose, use `docker ps` to obtain the name of the container `demo-tv-streaming-app_demo-tv-streaming-db_1` 
 
-read  https://github.com/oracle/docker-images/tree/main/NoSQL#using-oracle-nosql-command-line-from-an-external-host if you want to run those commands from your host
+
+read  https://github.com/oracle/docker-images/tree/main/NoSQL#using-oracle-nosql-command-line-from-an-external-host 
+if you want to run those commands from your host
 
 ## Run some GraphQL queries
 
@@ -141,9 +145,8 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
 }
 ````
 
-The steps outlined above are using Oracle NoSQL Database community edition, if you need Oracle NoSQL Database Enterprise Edition, please use the appropriate image name.
-
-WARNING Some queries are raising errors when running using community edition. Please contact me to have instructions about build an image using Enterprise Edition
+The steps outlined above are using Oracle NoSQL Database community edition, if you need Oracle NoSQL Database Enterprise Edition, 
+please use the appropriate image name.
 
 
 ````
