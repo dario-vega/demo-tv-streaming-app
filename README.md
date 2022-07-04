@@ -34,12 +34,12 @@ Start up this demo in a container
 ````shell
 docker run -d --env NOSQL_ENDPOINT=$HOSTNAME -p 3000:3000 demo-tv-streaming-app:latest 
 ````
-or use user-defined bridge network, to simplify I will use the -- link option
+or use user-defined bridge network name
 
 ````shell
-docker run -d --name=kvlite --hostname=kvlite --env KV_PROXY_PORT=8080 -p 8080:8080 oracle/nosql:ce
+docker run -d --env NOSQL_ENDPOINT=kvlite -p 3000:3000 demo-tv-streaming-app:latest 
 ````
-Note the use of --link to contact the KVLite Container (actual KVLite container is named kvlite; alias is kvlite).
+
 
 This project offers sample container image to show how to connect a NoSQL application to Oracle NoSQL Database Proxy running in a container
 
