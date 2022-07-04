@@ -95,10 +95,13 @@ npm start
 
   
 ````shell
+cd ~/demo-tv-streaming-app/demo-tv
 docker cp insert-stream-acct.sql kvlite:insert-stream-acct.sql
 docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 \
 -store kvstore load -file /insert-stream-acct.sql
 ````
+Note: if you are using docker compose, use `docker ps` to obtain the name of the container `demo-tv-streaming-app_demo-tv-streaming-db_1` 
+
 
 read  https://github.com/oracle/docker-images/tree/main/NoSQL#using-oracle-nosql-command-line-from-an-external-host if you want to run those commands from your host
 
