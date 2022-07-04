@@ -37,7 +37,7 @@ docker run -d --env NOSQL_ENDPOINT=$HOSTNAME -p 3000:3000 demo-tv-streaming-app:
 or use user-defined bridge network name
 
 ````shell
-docker run -d --link kvlite --env NOSQL_ENDPOINT=kvlite  -p 3001:3000 demo-tv-streaming-app:latest
+docker run -d --link kvlite --env NOSQL_ENDPOINT=kvlite  -p 3000:3000 demo-tv-streaming-app:latest
 ````
 
 
