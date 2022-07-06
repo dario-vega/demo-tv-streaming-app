@@ -93,6 +93,23 @@ async function getAllStreamsHelper() {
   return rows;
 }
 
+async function getByLastNameHelper(lastName) {
+  let statement = `DECLARE $v_lastName STRING; SELECT d.id, d.info as info FROM ${TABLE_NAME} d WHERE d.info.lastName = $v_lastName`;
+  const rows = [];
+  let cnt ;
+  let res;
+  const preparedStmt = await client.prepare(statement);
+  preparedStmt.bindings = {
+    $v_lastName: lastName,
+  };
+  do {
+     res = await client.query(preparedStmt, { continuationKey:cnt});
+     rows.push.apply(rows, res.rows);
+     cnt = res.continuationKey;
+  } while(res.continuationKey != null);
+  return rows;
+}
+
 async function peopleWatching(country) {
   let statement = `SELECT $show.showId, count(*) as cnt FROM ${TABLE_NAME} $s, unnest($s.info.shows[] as $show) WHERE $s.info.country = "USA" GROUP BY $show.showId ORDER BY count(*) DESC` 
   const rows = [];
@@ -126,6 +143,7 @@ async function getOneStreamHelper(id) {
 }
 
 async function createStreamHelper(input) {
+  input.shows= [];
   res = await client.putIfAbsent(TABLE_NAME, {
         info: input
   });
@@ -134,6 +152,21 @@ async function createStreamHelper(input) {
 }
 
 async function updateStreamHelper(id, input) {
+  
+  const myJSON = JSON.stringify(input);
+  statement = `DECLARE $v_show JSON; $v_id INTEGER; UPDATE ${TABLE_NAME} p ADD p.info.shows $v_show WHERE id=$v_id RETURNING *`;
+  //statement = `DECLARE $v_id INTEGER; UPDATE ${TABLE_NAME} p ADD p.info.shows ${myJSON} WHERE id=$v_id RETURNING *`;
+  const preparedStmt = await client.prepare(statement);
+  preparedStmt.bindings = {
+    $v_id: id,
+    $v_show : input
+  };
+  res = await client.query(preparedStmt);
+  return (res.rows[0]);
+}
+
+/*
+async function updateStreamHelper(id, input) {
   res = await client.putIfPresent(TABLE_NAME, {
         id: id,
         info: input
@@ -141,6 +174,7 @@ async function updateStreamHelper(id, input) {
   let updStream = {id :id,  info: input};
   return updStream;
 }
+*/
 
 async function deleteStreamHelper(id) {
   res = await client.delete(TABLE_NAME, {
@@ -168,7 +202,7 @@ type seriesInfo {
 type shows {
   showName: String!
   showId: Int,
-  type: String,
+  showType: String,
   numSeasons: Int,
   seriesInfo: [seriesInfo]
 }
@@ -194,21 +228,37 @@ type AggResult2 {
 type Query {
   streams: [Stream],
   stream(id: Int): Stream,
+  streamByLastName(lastName: String): [Stream],
   peopleWatching(country: String!): [AggResult1!],
   watchTime: [AggResult2!]
 }
-input showsEntry {
-  showName: String!
-}
+
 input StreamEntry {
   firstName: String!,
   lastName: String!,
   country: String!,
-  shows: [showsEntry]
+}
+input episodesEntry {
+  episodeID: Int!,
+  lengthMin: Int!,
+  minWatched: Int!
+}
+
+input seriesInfoEntry {
+  seasonNum: Int!,
+  numEpisodes: Int!,
+  episodes: [episodesEntry]
+}
+input showsEntry {
+  showName: String!
+  showId: Int,
+  showType: String,
+  numSeasons: Int,
+  seriesInfo: [seriesInfoEntry]
 }
 type Mutation {
   createStream(input: StreamEntry): Stream!,
-  updateStream(id: Int, input: StreamEntry): Stream!,
+  updateStream(id: Int, input: showsEntry): Stream!,
   deleteStream(id: Int): Stream!
 }
 `;
@@ -223,6 +273,9 @@ const resolvers = {
     },
     stream(root, {id}, context, info) {
       return getOneStreamHelper(id);
+    },
+    streamByLastName(root, {lastName}, context, info) {
+      return getByLastNameHelper(lastName);
     },
     peopleWatching(root, {country}, context, info) {
       return peopleWatching(country);
