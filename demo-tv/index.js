@@ -111,12 +111,16 @@ async function getByLastNameHelper(lastName) {
 }
 
 async function peopleWatching(country) {
-  let statement = `SELECT $show.showId, count(*) as cnt FROM ${TABLE_NAME} $s, unnest($s.info.shows[] as $show) WHERE $s.info.country = "USA" GROUP BY $show.showId ORDER BY count(*) DESC` 
+  let statement = `DECLARE $v_country STRING; SELECT $show.showId, count(*) as cnt FROM ${TABLE_NAME} $s, unnest($s.info.shows[] as $show) WHERE $s.info.country = $v_country GROUP BY $show.showId ORDER BY count(*) DESC`
   const rows = [];
   let cnt ;
   let res;
+  const preparedStmt = await client.prepare(statement);
+  preparedStmt.bindings = {
+    $v_country: country,
+  };
   do {
-     res = await client.query(statement, { continuationKey:cnt});
+     res = await client.query(preparedStmt, { continuationKey:cnt});
      rows.push.apply(rows, res.rows);
      cnt = res.continuationKey;
   } while(res.continuationKey != null);
