@@ -191,7 +191,8 @@ const typeDefs = gql`
 type episodes {
   episodeID: Int!,
   lengthMin: Int!,
-  minWatched: Int!
+  minWatched: Int!,
+  date: String
 }
 
 type seriesInfo {
@@ -202,7 +203,8 @@ type seriesInfo {
 type shows {
   showName: String!
   showId: Int,
-  showType: String,
+  type: String,
+  genres: [String],
   numSeasons: Int,
   seriesInfo: [seriesInfo]
 }
@@ -241,7 +243,8 @@ input StreamEntry {
 input episodesEntry {
   episodeID: Int!,
   lengthMin: Int!,
-  minWatched: Int!
+  minWatched: Int!,
+  date: String
 }
 
 input seriesInfoEntry {
@@ -252,7 +255,8 @@ input seriesInfoEntry {
 input showsEntry {
   showName: String!
   showId: Int,
-  showType: String,
+  type: String,
+  genres: [String],
   numSeasons: Int,
   seriesInfo: [seriesInfoEntry]
 }
