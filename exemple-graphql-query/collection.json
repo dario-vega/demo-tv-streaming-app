@@ -18,7 +18,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query ExampleQuery {\r\n  streams {\r\n    id\r\n    info {\r\n      firstName\r\n      lastName\r\n      country\r\n      shows {\r\n        showName\r\n        showId\r\n        showType\r\n        numSeasons\r\n        seriesInfo {\r\n          seasonNum\r\n          numEpisodes\r\n          episodes {\r\n            episodeID\r\n            lengthMin\r\n            minWatched\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+						"query": "query ExampleQuery {\r\n  streams {\r\n    id\r\n    info {\r\n      firstName\r\n      lastName\r\n      country\r\n      shows {\r\n        showName\r\n        showId\r\n        type\r\n        numSeasons\r\n        seriesInfo {\r\n          seasonNum\r\n          numEpisodes\r\n          episodes {\r\n            episodeID\r\n            lengthMin\r\n            minWatched\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
 						"variables": ""
 					}
 				},
@@ -126,7 +126,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query Stream($streamId: Int) {\r\n  user1:stream(id: $streamId) {\r\n    id\r\n    info {\r\n      firstName\r\n      lastName\r\n      country\r\n      shows {\r\n        showName\r\n        showId\r\n        showType\r\n        numSeasons\r\n        seriesInfo {\r\n          seasonNum\r\n          numEpisodes\r\n          episodes {\r\n            episodeID\r\n            lengthMin\r\n            minWatched\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
+						"query": "query Stream($streamId: Int) {\r\n  user1:stream(id: $streamId) {\r\n    id\r\n    info {\r\n      firstName\r\n      lastName\r\n      country\r\n      shows {\r\n        showName\r\n        showId\r\n        type\r\n        numSeasons\r\n        seriesInfo {\r\n          seasonNum\r\n          numEpisodes\r\n          episodes {\r\n            episodeID\r\n            lengthMin\r\n            minWatched\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n}",
 						"variables": "{\r\n  \"streamId\": NOSQL_EXAMPLE_STREAMID\r\n}"
 					}
 				},
@@ -162,7 +162,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query Stream($streamId: Int) {\r\n  user1:stream(id: $streamId) {\r\n    id\r\n    info {\r\n      firstName\r\n      lastName\r\n      country\r\n      shows {\r\n        showName\r\n        showId\r\n        showType\r\n        numSeasons\r\n        seriesInfo {\r\n          seasonNum\r\n          numEpisodes\r\n          episodes {\r\n            episodeID\r\n            lengthMin\r\n            minWatched\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n  user2: stream(id: 2) {\r\n    id \r\n    }\r\n}",
+						"query": "query Stream($streamId: Int) {\r\n  user1:stream(id: $streamId) {\r\n    id\r\n    info {\r\n      firstName\r\n      lastName\r\n      country\r\n      shows {\r\n        showName\r\n        showId\r\n        type\r\n        numSeasons\r\n        seriesInfo {\r\n          seasonNum\r\n          numEpisodes\r\n          episodes {\r\n            episodeID\r\n            lengthMin\r\n            minWatched\r\n          }\r\n        }\r\n      }\r\n    }\r\n  }\r\n  user2: stream(id: 2) {\r\n    id \r\n    }\r\n}",
 						"variables": "{\r\n  \"streamId\": 1\r\n}"
 					}
 				},
@@ -198,7 +198,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query Stream ($contentDirective: Boolean!){\r\n    user1: stream (id: 1) {\r\n        id\r\n        ...contentStreamed @include(if: $contentDirective)\r\n    }\r\n    user2: stream(id: 2) {\r\n        id\r\n        ...contentStreamed @include(if: $contentDirective)\r\n    }\r\n}\r\n\r\nfragment contentStreamed on Stream {\r\n    info\r\n    {\r\n      shows {  \r\n        showName\r\n        showId\r\n        showType\r\n        numSeasons    \r\n      }\r\n    }\r\n}",
+						"query": "query Stream ($contentDirective: Boolean!){\r\n    user1: stream (id: 1) {\r\n        id\r\n        ...contentStreamed @include(if: $contentDirective)\r\n    }\r\n    user2: stream(id: 2) {\r\n        id\r\n        ...contentStreamed @include(if: $contentDirective)\r\n    }\r\n}\r\n\r\nfragment contentStreamed on Stream {\r\n    info\r\n    {\r\n      shows {  \r\n        showName\r\n        showId\r\n        type\r\n        numSeasons    \r\n      }\r\n    }\r\n}",
 						"variables": "{\r\n  \"contentDirective\": true  \r\n}"
 					}
 				},
@@ -234,7 +234,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query Stream ($contentDirective: Boolean!){\r\n    user1: stream (id: 1) {\r\n        id\r\n        ...contentStreamed @include(if: $contentDirective)\r\n    }\r\n    user2: stream(id: 2) {\r\n        id\r\n        ...contentStreamed @include(if: $contentDirective)\r\n    }\r\n}\r\n\r\nfragment contentStreamed on Stream {\r\n    info\r\n    {\r\n      shows {  \r\n        showName\r\n        showId\r\n        showType\r\n        numSeasons    \r\n      }\r\n    }\r\n}",
+						"query": "query Stream ($contentDirective: Boolean!){\r\n    user1: stream (id: 1) {\r\n        id\r\n        ...contentStreamed @include(if: $contentDirective)\r\n    }\r\n    user2: stream(id: 2) {\r\n        id\r\n        ...contentStreamed @include(if: $contentDirective)\r\n    }\r\n}\r\n\r\nfragment contentStreamed on Stream {\r\n    info\r\n    {\r\n      shows {  \r\n        showName\r\n        showId\r\n        type\r\n        numSeasons    \r\n      }\r\n    }\r\n}",
 						"variables": "{\r\n  \"contentDirective\": false  \r\n}"
 					}
 				},
