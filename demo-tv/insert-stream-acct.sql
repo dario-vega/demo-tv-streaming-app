@@ -8,7 +8,7 @@ DEFAULT,
       {
          "showName": "Call My Agent",
          "showId": 12,
-         "showType": "tvseries",
+         "type": "tvseries",
          "numSeasons" : 2,
          "seriesInfo": [
             {
@@ -32,7 +32,7 @@ DEFAULT,
      {
          "showName": "Rita",
          "showId": 16,
-         "showType": "tvseries",
+         "type": "tvseries",
          "numSeasons" : 1,
          "seriesInfo": [
             {
@@ -60,7 +60,7 @@ DEFAULT,
       {
          "showName": "Call My Agent",
          "showId": 12,
-         "showType": "tvseries",
+         "type": "tvseries",
          "numSeasons" : 2,
          "seriesInfo": [
             {
@@ -112,7 +112,7 @@ DEFAULT,
       {
          "showName": "Apprentice",
          "showId": 14,
-         "showType": "tvseries",
+         "type": "tvseries",
          "numSeasons" : 2,
          "seriesInfo": [
             {
