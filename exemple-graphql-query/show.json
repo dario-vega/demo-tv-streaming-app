@@ -1,7 +1,7 @@
  {
     "showName" : "Casa de papel",
     "showId" : 26,
-    "showType" : "tvseries",
+    "type" : "tvseries",
     "numSeasons" : 4,
     "seriesInfo": [
       {
