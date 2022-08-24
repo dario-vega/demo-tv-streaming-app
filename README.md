@@ -1,8 +1,6 @@
 # demo-tv-streaming-app
 Demo TV streaming application using GraphQL and NoSQL
 
-Work in Progress 👷
-
 ## Deployment using Docker
 1. Start up KVLite in a container
 
@@ -158,12 +156,6 @@ curl --request POST \
 
 more queries below
 
-
-## deployment on kubernetes 
-
-Work in Progress 👷 
-
-see yaml files for a deployment using OKE (Oracle Kubernetes Engine)
 
 ## TEST using https://studio.apollographql.com/sandbox 
 
