@@ -33,10 +33,10 @@ async function createTable(client) {
   // readUnits, writeUnits, storageGB using same values as for Always free
   let resTab = await client.tableDDL(createDDL, {
       tableLimits: {
-          //mode: CapacityMode.PROVISIONED,
-          //readUnits: 50,
-          //writeUnits: 50,
-          mode: CapacityMode.ON_DEMAND,
+          // mode: CapacityMode.ON_DEMAND,
+          mode: CapacityMode.PROVISIONED,
+          readUnits: 50,
+          writeUnits: 50,
           storageGB: 25
       }
       , complete: true
