@@ -13,10 +13,9 @@ env:
   IMAGE_NAME: demo-tv-streaming-app
 
 jobs:
-  push:
-    name: Build and push Demo TV container image
-
+  install-kubectl:
     runs-on: ubuntu-latest
+    name: Build and push Demo TV container image
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
@@ -25,8 +24,8 @@ jobs:
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
 
     steps:
-      - name: Log into GitHub Container Registry
-        run: echo "${{ OCI_CLI_USER }}" "${{ OCI_CLI_REGION }}" 
+      - name: Echo
+        run: echo "$OCI_CLI_USER" "$OCI_CLI_REGION" 
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
         uses: oracle-actions/configure-kubectl-oke@v1.0
       - name: Get pods
