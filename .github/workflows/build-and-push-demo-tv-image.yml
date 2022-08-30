@@ -18,6 +18,12 @@ jobs:
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
+    env:
+      OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+      OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+      OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
 
     steps:
       - uses: actions/checkout@v2
@@ -48,3 +54,12 @@ jobs:
           docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
         env:
           TAG: ${{ steps.date.outputs.date }}
+
+      - name: Configure Kubectl for OKE
+        uses: ./
+        id: test-configure-kubectl-oke-action
+        with:
+          cluster: ${{ secrets.OKE_CLUSTER_ID }}
+
+      - name: Get pods
+        run: kubectl get pods -A
