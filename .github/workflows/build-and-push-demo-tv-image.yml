@@ -24,8 +24,6 @@ jobs:
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
 
     steps:
-      - name: Echo
-        run: echo "$OCI_CLI_USER" "$OCI_CLI_REGION" 
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
         uses: oracle-actions/configure-kubectl-oke@v1.0
       - name: Get pods
