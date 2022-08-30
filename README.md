@@ -1,5 +1,5 @@
 # demo-tv-streaming-app
-Demo TV streaming application using GraphQL and NoSQL
+Demo Video On Demand streaming application using GraphQL and NoSQL
 
 ## Deployment using Docker
 1. Start up KVLite in a container
