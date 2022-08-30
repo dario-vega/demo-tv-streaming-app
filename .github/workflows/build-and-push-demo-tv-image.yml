@@ -57,6 +57,30 @@ jobs:
         env:
           TAG: ${{ steps.date.outputs.date }}    
 
+      - name: Retrieve the OCID of a named compartment in tenancy
+        uses: oracle-actions/run-oci-cli-command@v1.0
+        id: find-compartment-id
+        with:
+          command: 'iam compartment list --compartment-id-in-subtree=true'
+          query: "data[?name=='davega'].id"
+
+      - name: Retrieve the ddl-table-name
+        id: ddl-table-name
+        run: echo "::set-output name=ddl-table-name::$(cat demo-tv/demo-stream-acct.ddl)"
+
+      - name: Retrieve the display name and table limits of the NoSQL tables in my compartment
+        uses: oracle-actions/run-oci-cli-command@v1.0
+        id: find-tables
+        with:
+          command: 'nosql table list --compartment-id ${{ steps.find-compartment-id.outputs.raw_output }}'
+          query: 'data.items[*].{name:name,tlimits:"table-limits"}'
+
+      - name: List the display name and table limits of the NoSQL tables in my compartment
+        run: |
+          echo ${{ steps.find-tables.outputs.output }} | jq .
+          echo ${{ steps.ddl-table-name.outputs.ddl-table-name  }} 
+
+
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
         uses: oracle-actions/configure-kubectl-oke@v1.0
         id: configure-kubectl-oke-action
