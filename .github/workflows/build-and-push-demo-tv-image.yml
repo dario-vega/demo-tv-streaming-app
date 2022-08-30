@@ -54,7 +54,9 @@ jobs:
           docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
         env:
           TAG: ${{ steps.date.outputs.date }}
-
+      
+      - uses: actions/checkout@v2
+      
       - name: Configure Kubectl for OKE
         uses: ./
         id: test-configure-kubectl-oke-action
