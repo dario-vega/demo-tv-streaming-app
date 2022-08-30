@@ -14,7 +14,7 @@ env:
 
 jobs:
   push:
-    name: Build and push Demo TV container image
+    name: Build and push VoD Demo container image
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     environment: OCI    
@@ -36,9 +36,11 @@ jobs:
         run: |
           REPO_OWNER=${{ github.repository_owner }}
           echo "::set-output name=repo-owner::${REPO_OWNER,,}"
+
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m')"
+      
       - name: Build image
         run: |
           cd demo-tv
@@ -54,14 +56,14 @@ jobs:
           docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
         env:
           TAG: ${{ steps.date.outputs.date }}    
+
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
         uses: oracle-actions/configure-kubectl-oke@v1.0
-        id: test-configure-kubectl-oke-action
+        id: configure-kubectl-oke-action
         with:
           cluster: ${{ secrets.OKE_CLUSTER_OCID }}        
       - name: Deploy oracle-app-ndcs-deployment and Get all resources
         run:  | 
-          kubectl get all 
           kubectl apply -f ./oracle-app-ndcs-deployment.yaml
           sleep 120
           kubectl get all 
