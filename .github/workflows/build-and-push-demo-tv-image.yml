@@ -25,6 +25,8 @@ jobs:
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
 
     steps:
+      - uses: actions/checkout@v2
+    
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
         uses: oracle-actions/configure-kubectl-oke@v1.0
         id: test-configure-kubectl-oke-action
