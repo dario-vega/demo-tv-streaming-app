@@ -78,7 +78,7 @@ jobs:
       - name: List the display name and table limits of the NoSQL tables in my compartment
         run: |
           echo ${{ steps.find-tables.outputs.output }} | jq .
-          echo ${{ steps.ddl-table-name.outputs.ddl-table-name  }} 
+          echo " ${{ steps.ddl-table-name.outputs.ddl-table-name  }} "
 
 
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
