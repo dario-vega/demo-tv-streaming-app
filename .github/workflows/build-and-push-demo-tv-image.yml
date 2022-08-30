@@ -16,6 +16,7 @@ jobs:
   install-kubectl:
     runs-on: ubuntu-latest
     name: Build and push Demo TV container image
+    environment: OCI    
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
@@ -31,7 +32,8 @@ jobs:
           cluster: ${{ secrets.OKE_CLUSTER_OCID }}        
       - name: Deploy oracle-app-ndcs-deployment and Get all resources
         run:  | 
-          kubectl apply -f oracle-app-ndcs-deployment.yaml
+          kubectl get all 
+          kubectl apply -f ./oracle-app-ndcs-deployment.yaml
           sleep 10
           kubectl get all 
 
