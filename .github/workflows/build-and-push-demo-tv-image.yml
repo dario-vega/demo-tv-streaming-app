@@ -73,7 +73,7 @@ jobs:
         id: find-tables
         with:
           command: 'nosql table list --compartment-id ${{ steps.find-compartment-id.outputs.raw_output }}'
-          query: 'data.items[*].{name:name,tlimits:"table-limits"}'
+          query: 'data.items[*].{name:name,tlimits:\"table-limits\"}'
 
       - name: List the display name and table limits of the NoSQL tables in my compartment
         run: |
