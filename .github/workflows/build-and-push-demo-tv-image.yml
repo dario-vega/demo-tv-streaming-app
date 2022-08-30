@@ -17,7 +17,6 @@ jobs:
     name: Build and push Demo TV container image
 
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
@@ -26,39 +25,9 @@ jobs:
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
 
     steps:
-      - uses: actions/checkout@v2
-
       - name: Log into GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${GITHUB_ACTOR,,} --password-stdin ghcr.io
-
-      - name: Repository owner needs to be lowercase
-        id: repo-owner
-        run: |
-          REPO_OWNER=${{ github.repository_owner }}
-          echo "::set-output name=repo-owner::${REPO_OWNER,,}"
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m')"
-      - name: Build image
-        run: |
-          cd demo-tv
-          docker build --tag ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG .
-          docker tag ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
-        env:
-          TAG: ${{ steps.date.outputs.date }}
-
-      - name: Push image to GitHub Container Registry
-        run: |
-          cd demo-tv
-          docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG
-          docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
-        env:
-          TAG: ${{ steps.date.outputs.date }}
-      
-      - uses: actions/checkout@v2
-
+        run: echo "${{ OCI_CLI_USER }}" "${{ OCI_CLI_REGION }}" 
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
         uses: oracle-actions/configure-kubectl-oke@v1.0
-
       - name: Get pods
         run: kubectl get pods -A
