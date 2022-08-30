@@ -29,5 +29,9 @@ jobs:
         id: test-configure-kubectl-oke-action
         with:
           cluster: ${{ secrets.OKE_CLUSTER_OCID }}        
-      - name: Get all resources
-        run: kubectl get all
+      - name: Deploy oracle-app-ndcs-deployment and Get all resources
+        run:  | 
+          kubectl apply -f oracle-app-ndcs-deployment.yaml
+          sleep 10
+          kubectl get all 
+
