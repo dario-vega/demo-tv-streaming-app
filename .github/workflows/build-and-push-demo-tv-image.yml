@@ -56,12 +56,9 @@ jobs:
           TAG: ${{ steps.date.outputs.date }}
       
       - uses: actions/checkout@v2
-      
-      - name: Configure Kubectl for OKE
-        uses: ./
-        id: test-configure-kubectl-oke-action
-        with:
-          cluster: ${{ secrets.OKE_CLUSTER_ID }}
+
+      - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
+        uses: oracle-actions/configure-kubectl-oke@v1.0
 
       - name: Get pods
         run: kubectl get pods -A
