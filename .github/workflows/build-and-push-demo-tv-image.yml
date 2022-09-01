@@ -10,7 +10,7 @@ on:
     workflow_dispatch:
 
 env:
-  IMAGE_NAME: demo-tv-streaming-app
+  IMAGE_NAME: demo-vod-streaming-app
 
 jobs:
   push:
