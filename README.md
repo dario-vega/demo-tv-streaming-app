@@ -98,7 +98,7 @@ docker cp insert-stream-acct.sql kvlite:insert-stream-acct.sql
 docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 \
 -store kvstore load -file /insert-stream-acct.sql
 ````
-*Note*: if you are using docker compose, use `docker ps` to obtain the name of the container `demo-tv-streaming-app_demo-tv-streaming-db_1` 
+*Note*: if you are using docker compose, use `docker ps` to obtain the name of the container e.g.`demo-tv-streaming-app_demo-vod-streaming-db_1` 
 
 
 read  https://github.com/oracle/docker-images/tree/main/NoSQL#using-oracle-nosql-command-line-from-an-external-host 
