@@ -23,8 +23,8 @@ see instuction https://github.com/oracle/docker-images/tree/main/NoSQL
 2. Deploy this application
 
 ````shell
-docker pull ghcr.io/dario-vega/demo-tv-streaming-app:latest
-docker tag ghcr.io/dario-vega/demo-tv-streaming-app:latest demo-tv-streaming-app:latest
+docker pull ghcr.io/dario-vega/demo-vod-streaming-app:latest
+docker tag ghcr.io/dario-vega/demo-vod-streaming-app:latest demo-vod-streaming-app:latest
 ````
 
 Start up this demo in a container 
