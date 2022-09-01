@@ -43,7 +43,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: iad.ocir.io/oradbclouducm/nosqldemos/demo-tv-streaming-app:latest
+        image: iad.ocir.io/oradbclouducm/nosqldemos/demo-vod-streaming-app:latest
         imagePullPolicy: Always
         env:
         - name: NOSQL_ENDPOINT
