@@ -150,15 +150,57 @@ curl --request POST     --header 'content-type: application/json' --url 'localho
 }
 ````
 
-The steps outlined above are using Oracle NoSQL Database community edition, if you need Oracle NoSQL Database Enterprise Edition, 
-please use the appropriate image name.
 
-
-````
+````shell
 curl --request POST \
     --header 'content-type: application/json' \
     --url 'localhost:3000' \
     --data '{"query":"query WatchTime { watchTime { showName seasonNum length } } "}'
+````
+````
+
+
+{
+  "data": {
+    "watchTime": [
+      {
+        "showName": "Apprentice",
+        "seasonNum": 1,
+        "length": 82
+      },
+      {
+        "showName": "Apprentice",
+        "seasonNum": 2,
+        "length": 96
+      },
+      {
+        "showName": "Rita",
+        "seasonNum": 1,
+        "length": 125
+      },
+      {
+        "showName": "Mr.Chef",
+        "seasonNum": 1,
+        "length": 125
+      },
+      {
+        "showName": "Mystery unfolded",
+        "seasonNum": 1,
+        "length": 125
+      },
+      {
+        "showName": "Call My Agent",
+        "seasonNum": 1,
+        "length": 158
+      },
+      {
+        "showName": "Call My Agent",
+        "seasonNum": 2,
+        "length": 192
+      }
+    ]
+  }
+}
 ````
 
 more queries below
