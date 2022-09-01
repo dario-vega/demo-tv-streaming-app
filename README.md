@@ -35,7 +35,7 @@ docker run -d --env NOSQL_ENDPOINT=$HOSTNAME -p 3000:3000 demo-tv-streaming-app:
 or use user-defined bridge network name
 
 ````shell
-docker run -d --link kvlite --env NOSQL_ENDPOINT=kvlite  -p 3000:3000 demo-tv-streaming-app:latest
+docker run -d --link kvlite --env NOSQL_ENDPOINT=kvlite  -p 3000:3000 demo-vod-streaming-app:latest
 ````
 
 
@@ -93,7 +93,7 @@ npm start
 
   
 ````shell
-cd ~/demo-tv-streaming-app/demo-tv
+cd ~/demo-tv-streaming-app/demo-vod
 docker cp insert-stream-acct.sql kvlite:insert-stream-acct.sql
 docker exec kvlite  java -jar lib/sql.jar -helper-hosts localhost:5000 \
 -store kvstore load -file /insert-stream-acct.sql
