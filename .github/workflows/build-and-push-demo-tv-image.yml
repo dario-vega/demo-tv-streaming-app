@@ -51,7 +51,7 @@ jobs:
 
       - name: Push image to GitHub Container Registry
         run: |
-          cd demo-tv
+          cd demo-vod
           docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG
           docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
         env:
@@ -66,7 +66,7 @@ jobs:
 
       - name: Retrieve the ddl-table-name
         id: ddl-table-name
-        run: echo "::set-output name=ddl-table-name::$(cat demo-tv/demo-stream-acct.ddl)"
+        run: echo "::set-output name=ddl-table-name::$(cat demo-vod/demo-stream-acct.ddl)"
 
       - name: Retrieve the display name and table limits of the NoSQL tables in my compartment
         uses: oracle-actions/run-oci-cli-command@v1.0
