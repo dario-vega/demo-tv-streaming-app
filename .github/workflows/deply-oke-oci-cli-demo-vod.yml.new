@@ -1,4 +1,4 @@
-name: Build and publish Demo TV container image to GitHub Container Registry
+name: Build and publish Demo VoD container image to GitHub Container Registry
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'demo-vod/*'
-      - '.github/workflows/build-and-push-demo-tv-image.yml'
+      - '.github/workflows/deply-oke-oci-cli-demo-vod.yml'
     workflow_dispatch:
 
 env:
