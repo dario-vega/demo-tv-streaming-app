@@ -57,6 +57,13 @@ docker-compose up -d
 docker-compose ps
 ````
 
+Note: https://docs.docker.com/compose/startup-order/
+
+````shell
+cd ~/demo-tv-streaming-app
+docker-compose start
+````
+
 
 ## Deployment on a external host connected to KVLite runnning in a container
 
