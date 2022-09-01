@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'demo-vod/*'
-      - '.github/workflows/deply-oke-oci-cli-demo-vod.yml'
+      - '.github/workflows/deploy-oke-oci-cli-demo-vod.yml'
     workflow_dispatch:
 
 env:
