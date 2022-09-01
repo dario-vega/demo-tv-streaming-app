@@ -81,9 +81,9 @@ see instuction https://github.com/oracle/docker-images/tree/main/NoSQL
 2. Clone this project and startup the application 
 
 ````shell
-cd ~/demo-tv-streaming-app
+cd ~/demo-tv-streaming-app/demo-vod
 npm install 
-export NOSQL_ENDPOINT=nosql-container-host
+export NOSQL_ENDPOINT=$HOSTNAME
 export NOSQL_PORT=8080
 npm start
 ````
