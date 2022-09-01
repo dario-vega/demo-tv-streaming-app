@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'demo-tv/*'
+      - 'demo-vod/*'
       - '.github/workflows/build-and-push-demo-tv-image.yml'
     workflow_dispatch:
 
@@ -43,7 +43,7 @@ jobs:
       
       - name: Build image
         run: |
-          cd demo-tv
+          cd demo-vod
           docker build --tag ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG .
           docker tag ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
         env:
