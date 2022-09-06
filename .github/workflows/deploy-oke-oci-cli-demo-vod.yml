@@ -78,16 +78,16 @@ jobs:
           echo $DDL_TABLE
           echo "::set-output name=ddl-table-name::${DDL_TABLE,,}"
 
-      - name: Set the ddl-table-name
+      - name: Set the ddl-limits
         id: table-limits
         run: |
           TABLE_LIMITS="{\"maxReadUnits\": 50,  \"maxStorageInGBs\": 25,  \"maxWriteUnits\": 50 }" 
           echo $TABLE_LIMITS
           echo "::set-output name=table-limits::${TABLE_LIMITS,,}"
 
-      - name: Create NoSQL Tables
+      - name: Create NoSQL Table
         uses: oracle-actions/run-oci-cli-command@v1.0
-        id: find-tables
+        id: create-table
         with:
           command: 'nosql table create --compartment-id ${{ steps.find-compartment-id.outputs.raw_output }}  --name stream_acct --ddl-statement ${{ steps.ddl-table-name.outputs.ddl-table-name  }} --table-limits=--ddl-statement ${{ steps.table-limits.outputs.table-limits  }} --wait-for-state SUCCEEDED --wait-for-state FAILED'
 
@@ -101,8 +101,6 @@ jobs:
       - name: List the display name and table limits of the NoSQL tables in my compartment
         run: |
           echo ${{ steps.find-tables.outputs.output }} | jq .
-          echo " ${{ steps.ddl-table-name.outputs.ddl-table-name  }} "
-
 
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
         uses: oracle-actions/configure-kubectl-oke@v1.0
