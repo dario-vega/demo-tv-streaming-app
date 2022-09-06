@@ -47,7 +47,7 @@ jobs:
       - name: Set the ddl-limits
         id: table-limits
         run: |
-          TABLE_LIMITS='{"maxReadUnits":50,"maxStorageInGBs":25,"maxWriteUnits": 50}'
+          TABLE_LIMITS='{\"maxReadUnits\":50,\"maxStorageInGBs\":25,\"maxWriteUnits\": 50}'
           echo $TABLE_LIMITS
           echo "::set-output name=table-limits::${TABLE_LIMITS,,}"
 
