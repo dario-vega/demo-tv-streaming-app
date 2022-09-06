@@ -7,7 +7,7 @@ on:
     paths:
       - 'demo-vod/*'
       - '.github/workflows/build-and-push-demo-vod-image.yml'
-    workflow_dispatch:
+  workflow_dispatch:
 
 env:
   IMAGE_NAME: demo-vod-streaming-app
@@ -19,7 +19,7 @@ jobs:
     if: github.event_name == 'push'
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${GITHUB_ACTOR,,} --password-stdin ghcr.io
