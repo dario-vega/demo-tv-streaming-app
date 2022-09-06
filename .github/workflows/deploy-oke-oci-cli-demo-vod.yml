@@ -7,7 +7,7 @@ on:
     paths:
       - 'demo-vod/*'
       - '.github/workflows/deploy-oke-oci-cli-demo-vod.yml'
-    workflow_dispatch:
+  workflow_dispatch:
 
 env:
   IMAGE_NAME: demo-vod-streaming-app
