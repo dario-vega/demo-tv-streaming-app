@@ -1,4 +1,4 @@
-name: Build and publish Demo VoD container image to GitHub Container Registry
+name: Deploy Demo VoD in OCI
 
 on:
   push:
