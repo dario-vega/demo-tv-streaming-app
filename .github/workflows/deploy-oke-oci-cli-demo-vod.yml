@@ -71,12 +71,25 @@ jobs:
           command: 'iam compartment list --compartment-id-in-subtree=true'
           query: "data[?name=='davega'].id"
 
-      - name: Retrieve the ddl-table-name
+      - name: Set the ddl-table-name
         id: ddl-table-name
         run: |
           DDL_TABLE=$(cat demo-vod/demo-stream-acct.ddl)
           echo $DDL_TABLE
           echo "::set-output name=ddl-table-name::${DDL_TABLE,,}"
+
+      - name: Set the ddl-table-name
+        id: table-limits
+        run: |
+          TABLE_LIMITS="{\"maxReadUnits\": 50,  \"maxStorageInGBs\": 25,  \"maxWriteUnits\": 50 }" 
+          echo $TABLE_LIMITS
+          echo "::set-output name=table-limits::${TABLE_LIMITS,,}"
+
+      - name: Create NoSQL Tables
+        uses: oracle-actions/run-oci-cli-command@v1.0
+        id: find-tables
+        with:
+          command: 'nosql table create --compartment-id ${{ steps.find-compartment-id.outputs.raw_output }}  --name stream_acct --ddl-statement ${{ steps.ddl-table-name.outputs.ddl-table-name  }} --table-limits=--ddl-statement ${{ steps.table-limits.outputs.table-limits  }} --wait-for-state SUCCEEDED --wait-for-state FAILED'
 
       - name: Retrieve the display name and table limits of the NoSQL tables in my compartment
         uses: oracle-actions/run-oci-cli-command@v1.0
