@@ -67,9 +67,9 @@ jobs:
       - name: Retrieve the ddl-table-name
         id: ddl-table-name
         run: |
-          DDL-STMT=$(cat demo-vod/demo-stream-acct.ddl)
-          echo $DDL-STMT
-          echo "::set-output name=ddl-table-name::$DDL-STMT"
+          DDL_TABLE=$(cat demo-vod/demo-stream-acct.ddl)
+          echo $DDL_TABLE
+          echo "::set-output name=ddl-table-name::${DDL_TABLE,,}"
 
       - name: Retrieve the display name and table limits of the NoSQL tables in my compartment
         uses: oracle-actions/run-oci-cli-command@v1.0
