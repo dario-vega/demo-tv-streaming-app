@@ -13,18 +13,10 @@ env:
   IMAGE_NAME: demo-vod-streaming-app
 
 jobs:
-  push:
+  push-build-image:
     name: Build and push VoD Demo container image
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
-    environment: OCI    
-    env:
-      OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
-      OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
-      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
-      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
-      OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
-
     steps:
       - uses: actions/checkout@v2
       
@@ -56,6 +48,21 @@ jobs:
           docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
         env:
           TAG: ${{ steps.date.outputs.date }}    
+
+  deploy-oci:
+    name: Deploy VoD Demo in OCI
+    needs: push-build-image
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    environment: OCI    
+    env:
+      OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
+      OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
+      OCI_CLI_FINGERPRINT: ${{ secrets.OCI_CLI_FINGERPRINT }}
+      OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
+      OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
+    steps:
+      - uses: actions/checkout@v2
 
       - name: Retrieve the OCID of a named compartment in tenancy
         uses: oracle-actions/run-oci-cli-command@v1.0
