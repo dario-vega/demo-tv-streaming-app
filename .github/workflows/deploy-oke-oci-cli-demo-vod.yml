@@ -13,45 +13,9 @@ env:
   IMAGE_NAME: demo-vod-streaming-app
 
 jobs:
-  push-build-image:
-    name: Build and push VoD Demo container image
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push'
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Log into GitHub Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${GITHUB_ACTOR,,} --password-stdin ghcr.io
-
-      - name: Repository owner needs to be lowercase
-        id: repo-owner
-        run: |
-          REPO_OWNER=${{ github.repository_owner }}
-          echo "::set-output name=repo-owner::${REPO_OWNER,,}"
-
-      - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m')"
-      
-      - name: Build image
-        run: |
-          cd demo-vod
-          docker build --tag ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG .
-          docker tag ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
-        env:
-          TAG: ${{ steps.date.outputs.date }}
-
-      - name: Push image to GitHub Container Registry
-        run: |
-          cd demo-vod
-          docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:$TAG
-          docker push ghcr.io/${{ steps.repo-owner.outputs.repo-owner }}/$IMAGE_NAME:latest
-        env:
-          TAG: ${{ steps.date.outputs.date }}    
-
   deploy-oci:
     name: Deploy VoD Demo in OCI
-    needs: push-build-image
+    #needs: push-build-image
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     environment: OCI    
@@ -89,7 +53,7 @@ jobs:
         uses: oracle-actions/run-oci-cli-command@v1.0
         id: create-table
         with:
-          command: 'nosql table create --compartment-id ${{ steps.find-compartment-id.outputs.raw_output }}  --name stream_acct --ddl-statement ${{ steps.ddl-table-name.outputs.ddl-table-name  }} --table-limits=--ddl-statement ${{ steps.table-limits.outputs.table-limits  }} --wait-for-state SUCCEEDED --wait-for-state FAILED'
+          command: 'nosql table create --compartment-id ${{ steps.find-compartment-id.outputs.raw_output }}  --name stream_acct --ddl-statement "${{ steps.ddl-table-name.outputs.ddl-table-name  }}" --table-limits="${{ steps.table-limits.outputs.table-limits  }}" --wait-for-state SUCCEEDED --wait-for-state FAILED'
 
       - name: Retrieve the display name and table limits of the NoSQL tables in my compartment
         uses: oracle-actions/run-oci-cli-command@v1.0
@@ -109,7 +73,7 @@ jobs:
           cluster: ${{ secrets.OKE_CLUSTER_OCID }}        
       - name: Deploy oracle-app-ndcs-deployment and Get all resources
         run:  | 
-          kubectl apply -f ./oracle-app-ndcs-deployment.yaml
+          #kubectl apply -f ./oracle-app-ndcs-deployment.yaml
           sleep 120
           kubectl get all 
 
