@@ -17,7 +17,7 @@ jobs:
     name: Deploy VoD Demo in OCI
     #needs: push-build-image
     runs-on: ubuntu-latest
-    environment: OCI    
+    #environment: OCI    
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
