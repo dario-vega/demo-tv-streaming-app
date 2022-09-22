@@ -62,7 +62,7 @@ jobs:
           echo ${{ steps.find-tables.outputs.output }} | jq .
 
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
-        uses: oracle-actions/configure-kubectl-oke@v1.0
+        uses: oracle-actions/configure-kubectl-oke@v1.1
         id: configure-kubectl-oke-action
         with:
           cluster: ${{ secrets.OKE_CLUSTER_OCID }}        
