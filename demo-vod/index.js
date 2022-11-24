@@ -1,3 +1,8 @@
+/ 
+// Copyright (c) 2022 Oracle, Inc.  All rights reserved.
+// Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
+// 
+
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
 
@@ -5,13 +10,6 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import fs from 'fs';
 import pkg from 'oracle-nosqldb';
 const { NoSQLClient, Region, ServiceType, CapacityMode } = pkg;
-
-//import { NoSQLClient } from "oracle-nosqldb"
-
-//const NoSQLClient = require('oracle-nosqldb').NoSQLClient;
-//const Region = require('oracle-nosqldb').Region;
-//const ServiceType = require('oracle-nosqldb').ServiceType;
-//const CapacityMode = require('oracle-nosqldb').CapacityMode;
 
 process
 .on('SIGTERM', function() {
@@ -148,7 +146,7 @@ async function watchTime() {
 }
 
 async function getOneStreamHelper(id) {
-  let res = await client.get(TABLE_NAME, { id: 1 });
+  let res = await client.get(TABLE_NAME, { id: id });
   //let z = Object.assign({id :id}, res.row.info)
   return res.row;
 }
