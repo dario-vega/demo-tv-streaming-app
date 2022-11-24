@@ -14,6 +14,6 @@
   "dependencies": {
     "@apollo/server": "^4.1.1",
     "graphql": "^16.6.0",
-    "oracle-nosqldb": "^5.3.1"
+    "oracle-nosqldb": "^5.3.3"
   }
 }
