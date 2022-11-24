@@ -19,10 +19,10 @@ jobs:
       OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Retrieve the OCID of a named compartment in tenancy
-        uses: oracle-actions/run-oci-cli-command@v1.0
+        uses: oracle-actions/run-oci-cli-command@v1.1.1
         id: find-compartment-id
         with:
           command: 'iam compartment list --compartment-id-in-subtree=true'
@@ -45,13 +45,13 @@ jobs:
           echo "::set-output name=table-limits::${TABLE_LIMITS,,}"
 
       - name: Create NoSQL Table
-        uses: oracle-actions/run-oci-cli-command@v1.0
+        uses: oracle-actions/run-oci-cli-command@v1.1.1
         id: create-table
         with:
           command: 'nosql table create --compartment-id ${{ steps.find-compartment-id.outputs.raw_output }}  --name stream_acct --ddl-statement "${{ steps.ddl-table-name.outputs.ddl-table-name  }}" --table-limits "${{ steps.table-limits.outputs.table-limits  }}" --wait-for-state SUCCEEDED --wait-for-state FAILED'
 
       - name: Retrieve the display name and table limits of the NoSQL tables in my compartment
-        uses: oracle-actions/run-oci-cli-command@v1.0
+        uses: oracle-actions/run-oci-cli-command@v1.1.1
         id: find-tables
         with:
           command: 'nosql table list --compartment-id ${{ steps.find-compartment-id.outputs.raw_output }}'
@@ -62,7 +62,7 @@ jobs:
           echo ${{ steps.find-tables.outputs.output }} | jq .
 
       - name: Configure Kubectl for Oracle Container Engine for Kubernetes (OKE)
-        uses: oracle-actions/configure-kubectl-oke@v1.1
+        uses: oracle-actions/configure-kubectl-oke@v1.3
         id: configure-kubectl-oke-action
         with:
           cluster: ${{ secrets.OKE_CLUSTER_OCID }}        
