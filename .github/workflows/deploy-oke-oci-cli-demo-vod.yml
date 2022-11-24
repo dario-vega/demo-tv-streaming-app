@@ -35,14 +35,14 @@ jobs:
           DDL_TABLE="${DDL_TABLE//$'\n'/' '}"
           DDL_TABLE="${DDL_TABLE//$'\r'/' '}"
           echo $DDL_TABLE
-          echo "::set-output name=ddl-table-name::${DDL_TABLE,,}"
+          echo "ddl-table-name=${DDL_TABLE,,}" >> $GITHUB_OUTPUT
 
       - name: Set the ddl-limits
         id: table-limits
         run: |
           TABLE_LIMITS='{\"maxReadUnits\":50,\"maxStorageInGBs\":25,\"maxWriteUnits\": 50}'
           echo $TABLE_LIMITS
-          echo "::set-output name=table-limits::${TABLE_LIMITS,,}"
+          echo "table-limits=${TABLE_LIMITS,,}" >> $GITHUB_OUTPUT
 
       - name: Create NoSQL Table
         uses: oracle-actions/run-oci-cli-command@v1.1.1
