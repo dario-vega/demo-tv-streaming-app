@@ -28,12 +28,12 @@ jobs:
         id: repo-owner
         run: |
           REPO_OWNER=${{ github.repository_owner }}
-          echo "::set-output name=repo-owner::${REPO_OWNER,,}"
+          echo "repo-owner=${REPO_OWNER,,}"  >> $GITHUB_OUTPUT
 
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m')"
-      
+        run: echo "date=$(date +'%Y-%m')" >> $GITHUB_OUTPUT
+
       - name: Build image
         run: |
           cd demo-vod
