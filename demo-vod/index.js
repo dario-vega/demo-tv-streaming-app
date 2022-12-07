@@ -53,6 +53,11 @@ async function createTable (client) {
 }
 
 function createNoSQLClient () {
+  console.log(process.env.NOSQL_ServiceType)
+  console.log(process.env.NOSQL_REGION)
+  console.log(process.env.NOSQL_COMPID)
+  
+
   switch (process.env.NOSQL_ServiceType) {
     case 'useInstancePrincipal':
       return new NoSQLClient({
