@@ -80,6 +80,16 @@ function createNoSQLClient () {
           }
         }
       })
+    case 'useResourcePrincipal':
+      return new NoSQLClient({
+        region: process.env.NOSQL_REGION,
+        compartment: process.env.NOSQL_COMPID,
+        auth: {
+          iam: {
+            useResourcePrincipal: true,
+          }
+        }
+      })
     default:
       // on-premise non-secure configuration or Cloud Simulator
       return new NoSQLClient({
