@@ -94,7 +94,8 @@ function createNoSQLClient () {
       // on-premise non-secure configuration or Cloud Simulator
       return new NoSQLClient({
         serviceType: ServiceType.KVSTORE,
-        endpoint: process.env.NOSQL_ENDPOINT + ':' + process.env.NOSQL_PORT
+        endpoint: process.env.NOSQL_ENDPOINT + ':' + process.env.NOSQL_PORT,
+        ddlTimeout: 60000
       })
   }
 }
